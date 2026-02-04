@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Menu</title>
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 50px;
+      font-size: 36px;
+    }
+
+    @keyframes shine {
+      0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.2); }
+      100% { box-shadow: 0 0 20px 20px rgba(255, 0, 0, 0.5); }
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      color: #000;
+      border: 2px solid #ff0000;
+      border-radius: 5px;
+      font-size: 16px;
+      text-decoration: none;
+      transition: box-shadow 0.3s ease-in-out;
+      animation: shine 3s infinite alternate;
+      margin: 5px;
+    }
+
+    .button:hover {
+      box-shadow: 0 0 10px 10px rgba(255, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>Lightspeed</h1>
+  <a href="proxy.html" class="button">Proxy</a>
+  <a href="games.html" class="button">Games</a>
+  <a href="apps.html" class="button">Apps</a>
+  <a href="chat.html" class="button">Chat</a>
+  <a href="settings.html" class="button">Settings</a>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lightspeed Proxy</title>
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      background-color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .form-group button {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #cc0000;
+    }
+
+    .translated-content {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lightspeed Proxy</h1>
+  <div class="form-group">
+    <label for="urlInput">Enter URL:</label>
+    <input type="text" id="urlInput" placeholder="Enter URL...">
+    <button onclick="fetchAndTranslate()">Go</button>
+  </div>
+
+  <div class="translated-content" id="translatedContent"></div>
+
+  <script>
+    function fetchAndTranslate() {
+      var urlInput = document.getElementById('urlInput').value.trim();
+      if (!urlInput) {
+        alert('Please enter a URL.');
+        return;
+      }
+
+      var proxyUrl = 'http://127.0.0.1:5000/proxy?url=' + encodeURIComponent(urlInput);
+
+      fetch(proxyUrl)
+        .then(response => response.text())
+        .then(data => {
+          // Translate the fetched content using Google Translate API
+          googleTranslate(data, 'en');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function googleTranslate(content, targetLang) {
+      var apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // Replace with your actual Google Translate API key
+      var apiUrl = 'https://translation.googleapis.com/language/translate/v2?key=' + apiKey;
+
+      var requestBody = {
+        q: content,
+        target: targetLang
+      };
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => response.json())
+      .then(data => {
+        var translatedContent = data.data.translations[0].translatedText;
+        displayTranslatedContent(translatedContent);
+      })
+      .catch(error => {
+        console.error('Translation Error:', error);
+      });
+    }
+
+    function displayTranslatedContent(translatedContent) {
+      var translatedContentDiv = document.getElementById('translatedContent');
+      translatedContentDiv.innerHTML = translatedContent;
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Lightspeed Proxy</title>
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      background-color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .form-group button {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Settings - Lightspeed Proxy</h1>
+  <div class="form-group">
+    <label for="siteName">Site Name:</label>
+    <input type="text" id="siteName" value="Lightspeed Proxy">
+    <button onclick="updateSiteName()">Save</button>
+  </div>
+
+  <script>
+    function updateSiteName() {
+      var siteNameInput = document.getElementById('siteName');
+      var newSiteName = siteNameInput.value;
+
+      // Save the new site name (for demonstration purposes)
+      document.title = 'Settings - ' + newSiteName;
+      alert('Site name updated to: ' + newSiteName);
+    }
+  </script>
+</body>
+</html>
